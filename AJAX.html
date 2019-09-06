@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AJAX</title>
+</head>
+<body>
+	<form>
+		ID <input type="text" name="id"><br>
+		Name <input type="text" name="nama"><br>
+		<input type="button" id="btnKirim" value="Kirim">
+	</form>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    $.get('http://192.168.49.143/department',function(data){
+    	console.log(data);
+    });
+
+    $.ajaxSetup({
+
+        headers: {
+
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+        }
+
+    });
+
+    $("#btnKirim").click(function(e){
+    	e.preventDefault();
+    	var id = $("input[name=id]").val();
+    	var name = $("input[name=nama]").val();
+
+    	$.ajax({
+    		type:'POST',
+    		url:'http://192.168.49.143/post',
+    		data:{id:id,name:name},
+    		success:function(data){
+    			console.log(data);
+    		}
+    	});
+    });
+});
+</script>
+</html>
